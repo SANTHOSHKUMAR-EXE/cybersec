@@ -1,7 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-scroll';
+import { useSpeechSynthesis } from 'react-speech-kit';
+import { Button } from '@/components/ui/button';
+import { VolumeIcon, VolumeXIcon } from 'lucide-react';
 
 const Index = () => {
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const { speak, cancel } = useSpeechSynthesis();
+
+  const handleSpeak = (text) => {
+    if (isSpeaking) {
+      cancel();
+      setIsSpeaking(false);
+    } else {
+      speak({ text });
+      setIsSpeaking(true);
+    }
+  };
+
   return (
     <div className="min-h-screen ai-background text-white">
       <header className="py-8 px-4 text-center">
@@ -27,7 +43,7 @@ const Index = () => {
 
       <div className="container mx-auto px-4 py-8">
         {['intro', 'need', 'common-crimes', 'scams', 'awareness', 'attacks', 'resources'].map((sectionId) => (
-          <Section key={sectionId} id={sectionId} />
+          <Section key={sectionId} id={sectionId} handleSpeak={handleSpeak} isSpeaking={isSpeaking} />
         ))}
       </div>
 
@@ -38,11 +54,23 @@ const Index = () => {
   );
 };
 
-const Section = ({ id }) => {
+const Section = ({ id, handleSpeak, isSpeaking }) => {
   const content = getSectionContent(id);
+  const speakText = `${content.title}. ${content.bodyText}`;
+
   return (
     <section id={id} className="mb-8 ai-box p-6">
-      <h2 className="text-2xl font-bold mb-4 ai-text-glow">{content.title}</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold ai-text-glow">{content.title}</h2>
+        <Button
+          onClick={() => handleSpeak(speakText)}
+          variant="outline"
+          size="icon"
+          className="ml-2"
+        >
+          {isSpeaking ? <VolumeXIcon className="h-4 w-4" /> : <VolumeIcon className="h-4 w-4" />}
+        </Button>
+      </div>
       {content.body}
     </section>
   );
@@ -52,11 +80,13 @@ const getSectionContent = (id) => {
   const contents = {
     intro: {
       title: "What is Cybersecurity?",
-      body: <p><strong>Cybersecurity</strong> refers to the practice of protecting systems, networks, and data from digital attacks. In today's connected world, businesses and individuals are increasingly vulnerable to hackers, who aim to steal sensitive information, disrupt operations, or damage reputations.</p>
+      body: <p><strong>Cybersecurity</strong> refers to the practice of protecting systems, networks, and data from digital attacks. In today's connected world, businesses and individuals are increasingly vulnerable to hackers, who aim to steal sensitive information, disrupt operations, or damage reputations.</p>,
+      bodyText: "Cybersecurity refers to the practice of protecting systems, networks, and data from digital attacks. In today's connected world, businesses and individuals are increasingly vulnerable to hackers, who aim to steal sensitive information, disrupt operations, or damage reputations."
     },
     need: {
       title: "Why You Need to Be Aware",
-      body: <p>Cybersecurity is no longer just an IT issue; it's everyone's responsibility. Whether you're an employee, manager, or executive, being aware of cyber threats helps prevent data breaches, phishing scams, and social engineering attacks. Employees are often the first line of defense, and human error is one of the leading causes of successful attacks.</p>
+      body: <p>Cybersecurity is no longer just an IT issue; it's everyone's responsibility. Whether you're an employee, manager, or executive, being aware of cyber threats helps prevent data breaches, phishing scams, and social engineering attacks. Employees are often the first line of defense, and human error is one of the leading causes of successful attacks.</p>,
+      bodyText: "Cybersecurity is no longer just an IT issue; it's everyone's responsibility. Whether you're an employee, manager, or executive, being aware of cyber threats helps prevent data breaches, phishing scams, and social engineering attacks. Employees are often the first line of defense, and human error is one of the leading causes of successful attacks."
     },
     'common-crimes': {
       title: "Common Cyber Crimes Employees Face",
@@ -71,7 +101,8 @@ const getSectionContent = (id) => {
             <li><strong>Data Breaches</strong>: Unauthorized access to sensitive business or personal data.</li>
           </ul>
         </>
-      )
+      ),
+      bodyText: "Employees are vulnerable to several types of cybercrime, including: Phishing: Fraudulent emails designed to steal sensitive information such as passwords or financial details. Identity Theft: Stealing someone's personal information to commit fraud. Malware: Malicious software designed to infiltrate and damage systems. Social Engineering: Manipulating individuals into revealing confidential information. Data Breaches: Unauthorized access to sensitive business or personal data."
     },
     scams: {
       title: "Popular Scams Targeting Employees",
@@ -132,7 +163,7 @@ const getSectionContent = (id) => {
       )
     }
   };
-  return contents[id] || { title: "Section Not Found", body: <p>Content not available.</p> };
+  return contents[id] || { title: "Section Not Found", body: <p>Content not available.</p>, bodyText: "Content not available." };
 };
 
 export default Index;
