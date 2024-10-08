@@ -20,12 +20,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 text-white">
-      <header className="py-8 px-4 bg-black bg-opacity-50 relative">
-        <img src="https://i.ibb.co/sQxt9Ms/ibm-ice-768x266.webp" alt="IBM Logo" className="absolute top-4 left-4 h-12" />
+      <header className="py-8 px-4 bg-black bg-opacity-50">
         <div className="container mx-auto text-center">
           <h1 className="text-5xl font-bold mb-4 animate-fade-in-down">
             IBM Cybersecurity Awareness Training Program
           </h1>
+          <img src="https://i.ibb.co/sQxt9Ms/ibm-ice-768x266.webp" alt="IBM Logo" className="mx-auto h-16 my-6" />
           <p className="text-xl mb-6 animate-fade-in-up">
             Empowering employees with knowledge to protect our digital assets
           </p>
