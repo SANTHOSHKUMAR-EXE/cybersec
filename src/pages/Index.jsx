@@ -19,13 +19,23 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen ai-background text-white">
-      <header className="py-8 px-4 text-center">
-        <h1 className="text-4xl font-bold mb-2 ai-text-glow">Cybersecurity Awareness Training Program</h1>
-        <p className="text-xl">Your AI-powered guide to protecting your organization from cyber threats.</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 text-white">
+      <header className="py-8 px-4 bg-black bg-opacity-50 relative">
+        <img src="https://i.ibb.co/sQxt9Ms/ibm-ice-768x266.webp" alt="IBM Logo" className="absolute top-4 left-4 h-12" />
+        <div className="container mx-auto text-center">
+          <h1 className="text-5xl font-bold mb-4 animate-fade-in-down">
+            IBM Cybersecurity Awareness Training Program
+          </h1>
+          <p className="text-xl mb-6 animate-fade-in-up">
+            Empowering employees with knowledge to protect our digital assets
+          </p>
+          <Button className="animate-pulse-slow">
+            Start Your Training
+          </Button>
+        </div>
       </header>
 
-      <nav className="bg-black bg-opacity-50 p-4 sticky top-0 z-10">
+      <nav className="bg-black bg-opacity-70 p-4 sticky top-0 z-10">
         <div className="container mx-auto flex flex-wrap justify-center space-x-4">
           {['intro', 'need', 'common-crimes', 'scams', 'awareness', 'attacks', 'resources'].map((item) => (
             <Link
@@ -47,8 +57,9 @@ const Index = () => {
         ))}
       </div>
 
-      <footer className="bg-black bg-opacity-50 text-white py-4 text-center">
-        <p>&copy; 2024 AI-Powered Cybersecurity Awareness Training Program</p>
+      <footer className="bg-black bg-opacity-70 text-white py-6 text-center">
+        <p>&copy; 2024 IBM Cybersecurity Awareness Training Program</p>
+        <p className="mt-2">Protecting our digital future, together.</p>
       </footer>
     </div>
   );
@@ -59,16 +70,16 @@ const Section = ({ id, handleSpeak, isSpeaking }) => {
   const speakText = `${content.title}. ${content.bodyText}`;
 
   return (
-    <section id={id} className="mb-8 ai-box p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold ai-text-glow">{content.title}</h2>
+    <section id={id} className="mb-12 bg-white bg-opacity-10 p-8 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-bold text-blue-300">{content.title}</h2>
         <Button
           onClick={() => handleSpeak(speakText)}
           variant="outline"
           size="icon"
-          className="ml-2"
+          className="ml-2 bg-blue-500 hover:bg-blue-600"
         >
-          {isSpeaking ? <VolumeXIcon className="h-4 w-4" /> : <VolumeIcon className="h-4 w-4" />}
+          {isSpeaking ? <VolumeXIcon className="h-5 w-5" /> : <VolumeIcon className="h-5 w-5" />}
         </Button>
       </div>
       {content.body}
