@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-scroll';
 import { useSpeechSynthesis } from 'react-speech-kit';
 import { Button } from '@/components/ui/button';
-import { VolumeIcon, VolumeXIcon } from 'lucide-react';
+import { VolumeIcon, VolumeXIcon, LockIcon, UnlockIcon } from 'lucide-react';
 
 const Index = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isTrainingStarted, setIsTrainingStarted] = useState(false);
   const { speak, cancel } = useSpeechSynthesis();
 
   const handleSpeak = (text) => {
@@ -16,6 +17,10 @@ const Index = () => {
       speak({ text });
       setIsSpeaking(true);
     }
+  };
+
+  const startTraining = () => {
+    setIsTrainingStarted(true);
   };
 
   return (
@@ -29,38 +34,50 @@ const Index = () => {
           <p className="text-xl mb-6 animate-fade-in-up">
             Empowering employees with knowledge to protect our digital assets
           </p>
-          <Button className="animate-pulse-slow">
-            Start Your Training
+          <Button className="animate-pulse-slow" onClick={startTraining}>
+            {isTrainingStarted ? (
+              <>
+                <UnlockIcon className="mr-2 h-4 w-4" /> Training Unlocked
+              </>
+            ) : (
+              <>
+                <LockIcon className="mr-2 h-4 w-4" /> Start Your Training
+              </>
+            )}
           </Button>
         </div>
       </header>
 
-      <nav className="bg-black bg-opacity-70 p-4 sticky top-0 z-10">
-        <div className="container mx-auto flex flex-wrap justify-center space-x-4">
-          {['intro', 'need', 'common-crimes', 'scams', 'awareness', 'attacks', 'resources'].map((item) => (
-            <Link
-              key={item}
-              to={item}
-              smooth={true}
-              duration={500}
-              className="text-white hover:text-blue-300 cursor-pointer transition-colors duration-300"
-            >
-              {item.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-            </Link>
-          ))}
-        </div>
-      </nav>
+      {isTrainingStarted && (
+        <>
+          <nav className="bg-black bg-opacity-70 p-4 sticky top-0 z-10">
+            <div className="container mx-auto flex flex-wrap justify-center space-x-4">
+              {['intro', 'need', 'common-crimes', 'scams', 'awareness', 'attacks', 'resources'].map((item) => (
+                <Link
+                  key={item}
+                  to={item}
+                  smooth={true}
+                  duration={500}
+                  className="text-white hover:text-blue-300 cursor-pointer transition-colors duration-300"
+                >
+                  {item.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                </Link>
+              ))}
+            </div>
+          </nav>
 
-      <div className="container mx-auto px-4 py-8">
-        {['intro', 'need', 'common-crimes', 'scams', 'awareness', 'attacks', 'resources'].map((sectionId) => (
-          <Section key={sectionId} id={sectionId} handleSpeak={handleSpeak} isSpeaking={isSpeaking} />
-        ))}
-      </div>
+          <div className="container mx-auto px-4 py-8">
+            {['intro', 'need', 'common-crimes', 'scams', 'awareness', 'attacks', 'resources'].map((sectionId) => (
+              <Section key={sectionId} id={sectionId} handleSpeak={handleSpeak} isSpeaking={isSpeaking} />
+            ))}
+          </div>
 
-      <footer className="bg-black bg-opacity-70 text-white py-6 text-center">
-        <p>&copy; 2024 IBM Cybersecurity Awareness Training Program</p>
-        <p className="mt-2">Protecting our digital future, together.</p>
-      </footer>
+          <footer className="bg-black bg-opacity-70 text-white py-6 text-center">
+            <p>&copy; 2024 IBM Cybersecurity Awareness Training Program</p>
+            <p className="mt-2">Protecting our digital future, together.</p>
+          </footer>
+        </>
+      )}
     </div>
   );
 };
